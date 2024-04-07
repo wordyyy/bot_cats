@@ -55,7 +55,7 @@ class UrlCat(telebot.TeleBot):
         self.polling(none_stop=True, interval=0)
 
 def main():
-    bot = UrlCat("7176599287:AAEMPIUNICI0bN1FhNg4NsiVjY1ijF9kFDU")
+    bot = UrlCat("token")
     bot.run()
 
 if __name__ == "__main__":
