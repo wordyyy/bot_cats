@@ -20,34 +20,35 @@ class UrlCat(telebot.TeleBot):
 
         self.send_message(message.from_user.id, "Выбери котика", reply_markup=self.__markup)
 
-    def __send_photo(self, message) -> None:
-        response = requests.get(UrlCat.url)
-        photo = response.content
-        bot.__send_photo(message.chat.id, photo)
-        UrlCat.text = ""
-        self.__send_welcome(message)
 
     def __get_text_messages(self, message: types.Message) -> None:
         if message.text == 'cat':
-            UrlCat.url = "https://cataas.com/cat"
-            __send_photo(message)
+            self.url = "https://cataas.com/cat"
+            self.__send_photo(message)
         elif message.text == "cute cat":
-            UrlCat.url = "https://cataas.com/cat/cute"
-            __send_photo(message)
+            self.url = "https://cataas.com/cat/cute"
+            self.__send_photo(message)
         elif message.text == "cat with text":
-            UrlCat.url = "https://cataas.com/cat/says/"
+            self.url = "https://cataas.com/cat/says/"
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             btn1 = types.KeyboardButton("Отправить текст")
             btn2 = types.KeyboardButton("Назад")
             markup.add(btn1, btn2)
-            bot.send_message(message.from_user.id, "Прими решение", reply_markup=markup)
+            self.send_message(message.from_user.id, "Прими решение", reply_markup=markup)
         elif message.text == "Отправить текст":
-            UrlCat.url += UrlCat.text
-            self.send_photo(message)
+            self.url += self.text
+            self.__send_photo(message)
         elif message.text == "Назад":
-            self.send_welcome(message)
+            self.__send_welcome(message)
         else:
-            UrlCat.text = message.text
+            self.text = message.text
+
+    def __send_photo(self, message) -> None:
+        response = requests.get(self.url)
+        photo = response.content
+        self.send_photo(message.chat.id, photo)
+        self.text = ""
+        self.__send_welcome(message)
 
     def run(self):
         self.register_message_handler(self.__send_welcome, commands=['start'])
@@ -55,7 +56,7 @@ class UrlCat(telebot.TeleBot):
         self.polling(none_stop=True, interval=0)
 
 def main():
-    bot = UrlCat("token")
+    bot = UrlCat("7176599287:AAEMPIUNICI0bN1FhNg4NsiVjY1ijF9kFDU")
     bot.run()
 
 if __name__ == "__main__":
