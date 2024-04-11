@@ -52,7 +52,7 @@ class UrlCat(telebot.TeleBot):
 
     def run(self):
         self.register_message_handler(self.__send_welcome, commands=['start'])
-        self.register_message_handler(self.__get_text_messages, commands=['text'])
+        self.register_message_handler(self.__get_text_messages, content_types=['text'])
         self.polling(none_stop=True, interval=0)
 
 def main():
